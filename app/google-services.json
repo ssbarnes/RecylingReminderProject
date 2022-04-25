@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "825904125807",
+    "firebase_url": "https://recycling-reminder-b1ae9-default-rtdb.firebaseio.com",
+    "project_id": "recycling-reminder-b1ae9",
+    "storage_bucket": "recycling-reminder-b1ae9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825904125807:android:4e2d4d3bf3c9a4b90f7a9a",
+        "android_client_info": {
+          "package_name": "com.example.recyreminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825904125807-4puph3h936tga5aqejalp2hn6q52a3ta.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNoYCplRGt0gG-DwTFIfYbDDPoJiC52qw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825904125807-4puph3h936tga5aqejalp2hn6q52a3ta.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,16 +1,20 @@
 package com.example.recyreminder.data
 
 import android.app.Activity
-import android.os.Bundle
 import android.content.Intent
-import android.text.Editable
-import android.text.TextUtils
+import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import com.example.recyreminder.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.util.*
+
 
 class ResidentLogin : Activity() {
 
@@ -24,30 +28,50 @@ class ResidentLogin : Activity() {
         setContentView(R.layout.residents_login)
 
         login = findViewById(R.id.resLogin)
-        login.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                user = findViewById(R.id.resUsername)
-                pass = findViewById(R.id.resPassword)
-                login(user.text.toString(), pass.text.toString())
-            }
-        })
+        login.setOnClickListener {
+            user = findViewById(R.id.resUsername)
+            pass = findViewById(R.id.resPassword)
+            login(user.text.toString(), pass.text.toString())
+        }
 
         register = findViewById(R.id.resRegister)
-        register.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                var registerIntent = Intent(this@ResidentLogin,ResidentRegister::class.java)
+        register.setOnClickListener {
+            val registerIntent = Intent(this@ResidentLogin, ResidentRegister::class.java)
 
-                startActivity(registerIntent)
-            }
-        })
+            startActivity(registerIntent)
+        }
     }
 
     fun login(username: String, password: String) {
         //TODO - Connect to firebase,
         // check if username and password exists in it, then switch activities
+
         Log.i("tag", username)
         Log.i("tag", password)
 
+        val database = Firebase.database.reference
+        val usersRef: DatabaseReference = database.child("users")
+        val userRef = usersRef.child(username)
 
+        val newUser: MutableMap<String, Any> = HashMap()
+        newUser["username"] = username
+        newUser["password"] = password
+
+        userRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    // TODO - check password and switch to appropriate interface
+                    Log.i("tag", "Yay it already exists")
+                } else {
+                    // TODO - reject login attempt if user doesn't exist
+                    Log.i("tag", "Nope")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.i("tag", error.message)
+            }
+
+        })
     }
 }

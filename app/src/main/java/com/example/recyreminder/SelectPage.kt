@@ -8,9 +8,9 @@ class FirstPage: Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.first_page)
+        setContentView(R.layout.select_page)
 
-        Log.i(TAG)
+//        Log.i(TAG)
     }
 
     companion object {

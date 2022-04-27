@@ -15,6 +15,7 @@ import java.util.*
 class ResidentLogin : Activity() {
 
     private lateinit var login : Button
+    private lateinit var register : Button
     private lateinit var user : EditText
     private lateinit var pass : EditText
 
@@ -31,6 +32,14 @@ class ResidentLogin : Activity() {
             }
         })
 
+        register = findViewById(R.id.resRegister)
+        register.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                var registerIntent = Intent(this@ResidentLogin,ResidentRegister::class.java)
+
+                startActivity(registerIntent)
+            }
+        })
     }
 
     fun login(username: String, password: String) {
@@ -38,5 +47,7 @@ class ResidentLogin : Activity() {
         // check if username and password exists in it, then switch activities
         Log.i("tag", username)
         Log.i("tag", password)
+
+
     }
 }

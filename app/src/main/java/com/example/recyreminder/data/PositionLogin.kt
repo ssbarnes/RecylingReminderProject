@@ -16,10 +16,11 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-class ResidentLogin : Activity() {
+class PositionLogin : Activity() {
 
     private lateinit var login : Button
     private lateinit var register : Button
+    private lateinit var registerGc: Button
     private lateinit var user : EditText
     private lateinit var pass : EditText
 
@@ -36,9 +37,16 @@ class ResidentLogin : Activity() {
 
         register = findViewById(R.id.resRegister)
         register.setOnClickListener {
-            val registerIntent = Intent(this@ResidentLogin, ResidentRegister::class.java)
+            val registerIntent = Intent(this@PositionLogin, ResidentRegister::class.java)
 
             startActivity(registerIntent)
+        }
+
+        registerGc = findViewById(R.id.gcRegister)
+        registerGc.setOnClickListener {
+//            val registerIntent = Intent(this@PositionLogin, ResidentRegister::class.java)
+//
+//            startActivity(registerIntent)
         }
     }
 

@@ -9,12 +9,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.recyreminder.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
@@ -24,6 +26,9 @@ class ResidentRegister : Activity() {
     private lateinit var user : EditText
     private lateinit var pass : EditText
     private lateinit var address : EditText
+
+    private val database: DatabaseReference = Firebase.database.reference
+    private val usersRef: DatabaseReference = database.child("users")
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,26 +40,48 @@ class ResidentRegister : Activity() {
             pass = findViewById(R.id.resRegPassword)
             address = findViewById(R.id.resRegAddress)
 
-            sendData(user.text.toString(), pass.text.toString(), address.text.toString())
+            Log.i(TAG, user.text.toString())
+            Log.i(TAG, pass.text.toString())
+            Log.i(TAG, address.text.toString())
+
+            val newUser: MutableMap<String, Any> = HashMap()
+            newUser["username"] = user.text.toString()
+            newUser["password"] = pass.text.toString()
+            newUser["address"] = address.text.toString()
+
+            sendData(newUser)
         }
 
+        /* TODO - This is just a proof of concept. Move elsewhere as needed.
+            This is an example of the app responding to the password for a user
+            being changed in the database
+        */
+        val seifPassRef = usersRef.child("seif/password")
+
+        // Check if password for "seif" has changed
+        seifPassRef.addValueEventListener(object: ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = snapshot.getValue<String>()
+                Toast.makeText(applicationContext,
+                    "Password is now $value",
+                    Toast.LENGTH_LONG).show()
+                Log.d(TAG, "Password is now $value")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+
+        })
     }
 
-    fun sendData(username: String, password: String, addr: String) {
-        //TODO - post data to firebase database
-        Log.i(TAG, username)
-        Log.i(TAG, password)
-        Log.i(TAG, addr)
+    private fun sendData(newUser: MutableMap<String, Any>) {
+        val userRef = usersRef.child(newUser["username"] as String)
 
-        val newUser: MutableMap<String, Any> = HashMap()
-        newUser["username"] = username
-        newUser["password"] = password
-        newUser["address"] = addr
-
-        val database = Firebase.database.reference
-        val usersRef: DatabaseReference = database.child("users")
-        val userRef = usersRef.child(username)
-
+        // Check if user already exists
         userRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {

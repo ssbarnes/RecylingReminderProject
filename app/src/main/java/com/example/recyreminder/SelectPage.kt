@@ -10,7 +10,6 @@ import com.example.recyreminder.ui.login.LoginActivity
 import java.io.*
 
 class SelectPage: Activity() {
-
     protected lateinit var gcButton: Button
     protected lateinit var residentButton: Button
 

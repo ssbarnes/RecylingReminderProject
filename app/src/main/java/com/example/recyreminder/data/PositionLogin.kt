@@ -18,6 +18,7 @@ import java.util.*
 
 class PositionLogin : Activity() {
 
+    private lateinit var position: String
     private lateinit var login : Button
     private lateinit var register : Button
     private lateinit var registerGc: Button
@@ -28,11 +29,21 @@ class PositionLogin : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.residents_login)
 
+        val button = getIntent()
+        position = button.getStringExtra("position").toString()
+
         login = findViewById(R.id.resLogin)
         login.setOnClickListener {
             user = findViewById(R.id.resUsername)
             pass = findViewById(R.id.resPassword)
             login(user.text.toString(), pass.text.toString())
+
+            val signIn: Intent
+            if (position == "Garbage Collector") {
+
+            } else {
+
+            }
         }
 
         register = findViewById(R.id.resRegister)
@@ -44,9 +55,9 @@ class PositionLogin : Activity() {
 
         registerGc = findViewById(R.id.gcRegister)
         registerGc.setOnClickListener {
-//            val registerIntent = Intent(this@PositionLogin, ResidentRegister::class.java)
-//
-//            startActivity(registerIntent)
+            val registerIntent = Intent(this@PositionLogin, GCRegister::class.java)
+
+            startActivity(registerIntent)
         }
     }
 
@@ -81,5 +92,10 @@ class PositionLogin : Activity() {
             }
 
         })
+        //TODO - return true or false depending on whether login was successful
+    }
+
+    companion object {
+        const val TAG = "Recycling Reminder"
     }
 }

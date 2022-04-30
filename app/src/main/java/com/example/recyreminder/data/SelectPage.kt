@@ -1,4 +1,4 @@
-package com.example.recyreminder
+package com.example.recyreminder.data
 
 import android.app.Activity
 import android.content.Intent
@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import com.example.recyreminder.data.PositionLogin
-import com.example.recyreminder.ui.login.LoginActivity
-import java.io.*
+import com.example.recyreminder.R
 
 class SelectPage: Activity() {
     protected lateinit var gcButton: Button
@@ -32,10 +30,9 @@ class SelectPage: Activity() {
 
     }
 
-    fun selectPosition(v: View) {
+    private fun selectPosition(v: View) {
         with (v as Button) {
-            val button: Intent
-            button = Intent(
+            val button: Intent = Intent(
                 this@SelectPage,
                 PositionLogin::class.java
             )

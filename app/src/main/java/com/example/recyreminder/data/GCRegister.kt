@@ -1,12 +1,12 @@
-package com.example.recyreminder.data.model
+package com.example.recyreminder.data
 
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.recyreminder.R
-import com.example.recyreminder.data.ResidentRegister
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -33,6 +33,7 @@ class GCRegister: Activity() {
             pass = findViewById(R.id.gcRegPassword)
 
             sendData(user.text.toString(), pass.text.toString())
+            finish()
         }
 
     }
@@ -45,6 +46,7 @@ class GCRegister: Activity() {
         val newUser: MutableMap<String, Any> = HashMap()
         newUser["username"] = username
         newUser["password"] = password
+        newUser["position"] = "gc"
 
         val database = Firebase.database.reference
         val usersRef: DatabaseReference = database.child("users")
@@ -55,6 +57,7 @@ class GCRegister: Activity() {
                 if (snapshot.exists()) {
                     // TODO - tell user they're already registered
                     Log.i(ResidentRegister.TAG, "Uh oh username already exists")
+                    Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT)
                 } else {
                     Log.i(ResidentRegister.TAG, "Come on in")
                     userRef.setValue(newUser)

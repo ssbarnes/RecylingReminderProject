@@ -6,7 +6,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="20dp"
-    tools:context=".SelectPage">
+    tools:context=".data.SelectPage">
 
     <TextView
         android:layout_width="fill_parent"

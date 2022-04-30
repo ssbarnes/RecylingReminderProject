@@ -11,6 +11,21 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".ui.login.LoginActivity">
 
+    <TextView
+        android:id="@+id/resReg"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#000000"
+        android:gravity="center"
+        android:text="Resident Registration:"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="237dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <EditText
         android:id="@+id/resRegUsername"
         android:layout_width="0dp"
@@ -18,11 +33,11 @@
         android:layout_marginTop="96dp"
         android:inputType="text"
         android:autofillHints="Username"
-        android:hint="Username"
+        android:hint="New Username"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/resReg" />
 
     <EditText
         android:id="@+id/resRegPassword"
@@ -30,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:autofillHints="@string/prompt_password"
-        android:hint="@string/prompt_password"
+        android:hint="@string/prompt_new_password"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
@@ -54,7 +69,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resRegPassword" />
 
+    <EditText
+        android:id="@+id/resRegCity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:autofillHints="City"
+        android:hint="City"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resRegAddress" />
 
+    <EditText
+        android:id="@+id/resRegCountryState"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:autofillHints="Country/State"
+        android:hint="Country/State"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resRegCity" />
+
+    <EditText
+        android:id="@+id/resRegZipCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:autofillHints="Zip Code"
+        android:hint="Zip Code"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resRegCountryState" />
 
     <Button
         android:id="@+id/resRegRegister"
@@ -64,11 +122,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
         android:enabled="true"
+        android:backgroundTint="#FF8000"
         android:text="Finish Registering"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resRegAddress"
+        app:layout_constraintTop_toBottomOf="@+id/resRegZipCode"
         app:layout_constraintVertical_bias="0.2"
         />
 

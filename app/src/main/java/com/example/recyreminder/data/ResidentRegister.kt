@@ -26,6 +26,9 @@ class ResidentRegister : Activity() {
     private lateinit var user : EditText
     private lateinit var pass : EditText
     private lateinit var address : EditText
+    private lateinit var city : EditText
+    private lateinit var countryState : EditText
+    private lateinit var zipCode : EditText
 
     private val database: DatabaseReference = Firebase.database.reference
     private val usersRef: DatabaseReference = database.child("users")
@@ -34,22 +37,33 @@ class ResidentRegister : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.residents_register)
 
+        Log.i(TAG, "Entered Resident Registration")
+
         register = findViewById(R.id.resRegRegister)
         register.setOnClickListener {
             user = findViewById(R.id.resRegUsername)
             pass = findViewById(R.id.resRegPassword)
             address = findViewById(R.id.resRegAddress)
+            city = findViewById(R.id.resRegCity)
+            countryState = findViewById(R.id.resRegCountryState)
+            zipCode = findViewById(R.id.resRegZipCode)
 
             Log.i(TAG, user.text.toString())
             Log.i(TAG, pass.text.toString())
             Log.i(TAG, address.text.toString())
 
-            val newUser: MutableMap<String, Any> = HashMap()
-            newUser["username"] = user.text.toString()
-            newUser["password"] = pass.text.toString()
-            newUser["address"] = address.text.toString()
+//            val newUser: MutableMap<String, Any> = HashMap()
+//            newUser["username"] = user.text.toString()
+//            newUser["password"] = pass.text.toString()
+//            newUser["address"] = address.text.toString()
+//
+//            sendData(newUser)
 
-            sendData(newUser)
+            val newAddress = address.text.toString() + ", " + city.text.toString() + ", " +
+                    countryState.text.toString() + " " + zipCode.text.toString()
+
+            sendData(user.text.toString(), pass.text.toString(), newAddress)
+            finish()
         }
 
         /* TODO - This is just a proof of concept. Move elsewhere as needed.
@@ -78,8 +92,16 @@ class ResidentRegister : Activity() {
         })
     }
 
-    private fun sendData(newUser: MutableMap<String, Any>) {
-        val userRef = usersRef.child(newUser["username"] as String)
+    private fun sendData(username: String, password: String, addr: String) {
+        val newUser: MutableMap<String, Any> = HashMap()
+        newUser["username"] = username
+        newUser["password"] = password
+        newUser["address"] = addr
+        newUser["position"] = "resident"
+
+        val database = Firebase.database.reference
+        val usersRef: DatabaseReference = database.child("users")
+        val userRef = usersRef.child(addr)
 
         // Check if user already exists
         userRef.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -87,6 +109,7 @@ class ResidentRegister : Activity() {
                 if (snapshot.exists()) {
                     // TODO - tell user they're already registered
                     Log.i(TAG, "Uh oh username already exists")
+                    Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT)
                 } else {
                     Log.i(TAG, "Come on in")
                     userRef.setValue(newUser)
@@ -96,6 +119,8 @@ class ResidentRegister : Activity() {
                 Log.i(TAG, error.message)
             }
         })
+
+        Log.i(TAG, "Completed Resident Registration")
     }
 
     companion object {

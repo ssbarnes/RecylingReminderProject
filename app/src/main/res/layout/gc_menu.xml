@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="20dp"
+    tools:context=".data.SelectPage">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#000000"
+        android:gravity="center"
+        android:text="Garbage Collector Menu:"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:layout_marginBottom="50dp"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="237dp" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:hint="Give Resident Violation:"/>
+
+    <Button
+        android:id="@+id/gc"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="start"
+        android:backgroundTint="#FF8000"
+        android:layout_marginBottom="50dp"
+        android:textColor="@color/white"
+        android:text="Garbage Collector"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="237dp"/>
+
+    <Button
+        android:id="@+id/resident"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="start"
+        android:backgroundTint="#FF8000"
+        android:text="Resident"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="237dp" />
+
+</LinearLayout>

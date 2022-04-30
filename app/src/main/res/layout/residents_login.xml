@@ -11,6 +11,21 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".ui.login.LoginActivity">
 
+    <TextView
+        android:id="@+id/positionLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#000000"
+        android:gravity="center"
+        android:text="Login:"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="237dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <EditText
         android:id="@+id/resUsername"
         android:layout_width="0dp"
@@ -22,7 +37,7 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/positionLogin" />
 
     <EditText
         android:id="@+id/resPassword"
@@ -48,6 +63,7 @@
         android:layout_marginBottom="64dp"
         android:enabled="true"
         android:text="Sign In"
+        android:backgroundTint="#FF8000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +79,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
         android:enabled="true"
+        android:backgroundTint="#FF8000"
         android:text="Click Here to Register as a Resident"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,6 +96,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
         android:enabled="true"
+        android:backgroundTint="#FF8000"
         android:text="Click Here to Register as a Garbage Collector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

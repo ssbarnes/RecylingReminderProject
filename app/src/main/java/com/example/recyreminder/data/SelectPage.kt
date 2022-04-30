@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import com.example.recyreminder.data.PositionLogin
 import com.example.recyreminder.ui.login.LoginActivity
 import java.io.*
 
@@ -34,17 +35,11 @@ class SelectPage: Activity() {
     fun selectPosition(v: View) {
         with (v as Button) {
             val button: Intent
-            if (v.text == "Garbage Collector") {
-                button = Intent(
-                    this@SelectPage,
-                    GarbageCollectorCompany::class.java
-                )
-            } else {
-                button = Intent(
-                    this@SelectPage,
-                    LoginActivity::class.java
-                )
-            }
+            button = Intent(
+                this@SelectPage,
+                PositionLogin::class.java
+            )
+            button.putExtra("position", v.text)
             startActivity(button)
         }
     }

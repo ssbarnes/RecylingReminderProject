@@ -48,6 +48,7 @@ class ResidentRegister : Activity() {
             countryState = findViewById(R.id.resRegCountryState)
             zipCode = findViewById(R.id.resRegZipCode)
 
+
             Log.i(TAG, user.text.toString())
             Log.i(TAG, pass.text.toString())
             Log.i(TAG, address.text.toString())
@@ -88,7 +89,6 @@ class ResidentRegister : Activity() {
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Failed to read value.", error.toException())
             }
-
         })
     }
 

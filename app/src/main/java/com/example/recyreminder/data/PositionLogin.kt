@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import com.example.recyreminder.R
+import com.example.recyreminder.data.ResidentNotifications
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -32,6 +33,8 @@ class PositionLogin : Activity() {
         val button = getIntent()
         position = button.getStringExtra("position").toString()
 
+
+        //Login button
         login = findViewById(R.id.resLogin)
         login.setOnClickListener {
             user = findViewById(R.id.resUsername)
@@ -44,8 +47,15 @@ class PositionLogin : Activity() {
             } else {
 
             }
+            //Move this into else once we can get type of
+            //user from firebase
+            //Go to notifications tab
+            val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
+            startActivity(notificationIntent)
+
         }
 
+        //Resident Register
         register = findViewById(R.id.resRegister)
         register.setOnClickListener {
             val registerIntent = Intent(this@PositionLogin, ResidentRegister::class.java)
@@ -53,6 +63,7 @@ class PositionLogin : Activity() {
             startActivity(registerIntent)
         }
 
+        //Garbage Collector Register
         registerGc = findViewById(R.id.gcRegister)
         registerGc.setOnClickListener {
             val registerIntent = Intent(this@PositionLogin, GCRegister::class.java)

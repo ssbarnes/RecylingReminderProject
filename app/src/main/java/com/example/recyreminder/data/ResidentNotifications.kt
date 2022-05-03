@@ -47,7 +47,7 @@ class ResidentNotifications : Activity(){
         val names = ArrayList<String>()
 
         //Here is where a list of notifications from firebase would be shown instead
-        names.add("notification 1")
+        names.add("You have received a trash citation, please separate your recycles and trash items. This notification was sent on 5/2/2022")
         names.add("notification 2")
         names.add("notification 3")
         names.add("notification 3")

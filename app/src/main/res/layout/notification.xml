@@ -6,4 +6,5 @@
     android:layout_margin="2dp"
     android:gravity="center"
     android:padding="16dp"
+    android:background="@drawable/rectangle"
     android:textAppearance="@android:style/TextAppearance.Material.Display1" />

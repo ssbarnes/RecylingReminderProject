@@ -69,7 +69,8 @@ class ResidentRegister : Activity() {
 
         /* TODO - This is just a proof of concept. Move elsewhere as needed.
             This is an example of the app responding to the password for a user
-            being changed in the database
+            being changed in the database. Also consider creating notifications for
+            specific street.
         */
         val seifPassRef = usersRef.child("seif/password")
 

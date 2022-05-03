@@ -18,6 +18,7 @@ import java.util.*
 
 
 class PositionLogin : Activity() {
+    private val database = Firebase.database.reference
 
     private lateinit var position: String
     private lateinit var login : Button
@@ -79,7 +80,6 @@ class PositionLogin : Activity() {
         Log.i("tag", username)
         Log.i("tag", password)
 
-        val database = Firebase.database.reference
         val usersRef: DatabaseReference = database.child("users")
         val userRef = usersRef.child(username)
 

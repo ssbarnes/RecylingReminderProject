@@ -51,8 +51,10 @@ class PositionLogin : Activity() {
             //Move this into else once we can get type of
             //user from firebase
             //Go to notifications tab
-            val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
-            startActivity(notificationIntent)
+//            val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
+//            startActivity(notificationIntent)
+            val mapsIntent = Intent(this@PositionLogin, GCMap::class.java)
+            startActivity(mapsIntent)
 
         }
 

@@ -1,24 +1,25 @@
 package com.example.recyreminder.data
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.recyreminder.R
-import com.example.recyreminder.data.ResidentNotifications
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.*
-
 
 class PositionLogin : Activity() {
     private val database = Firebase.database.reference
+    private lateinit var mPrefs: SharedPreferences
 
     private lateinit var position: String
     private lateinit var login : Button
@@ -29,9 +30,12 @@ class PositionLogin : Activity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mPrefs = getSharedPreferences("appPrefs", Context.MODE_PRIVATE)
+
         setContentView(R.layout.residents_login)
 
-        val button = getIntent()
+        val button = intent
         position = button.getStringExtra("position").toString()
 
 
@@ -53,8 +57,10 @@ class PositionLogin : Activity() {
             //Go to notifications tab
 //            val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
 //            startActivity(notificationIntent)
-            val mapsIntent = Intent(this@PositionLogin, GCMap::class.java)
-            startActivity(mapsIntent)
+
+//             val mapsIntent = Intent(this@PositionLogin, GCMap::class.java)
+//             startActivity(mapsIntent)
+
 
         }
 
@@ -76,27 +82,49 @@ class PositionLogin : Activity() {
     }
 
     fun login(username: String, password: String) {
-        //TODO - Connect to firebase,
-        // check if username and password exists in it, then switch activities
-
         Log.i("tag", username)
         Log.i("tag", password)
 
         val usersRef: DatabaseReference = database.child("users")
-        val userRef = usersRef.child(username)
+        var loginSuccess = false
 
-        val newUser: MutableMap<String, Any> = HashMap()
-        newUser["username"] = username
-        newUser["password"] = password
-
-        userRef.addListenerForSingleValueEvent(object: ValueEventListener {
+        // Go through entire database checking for username and password
+        usersRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    // TODO - check password and switch to appropriate interface
-                    Log.i("tag", "Yay it already exists")
-                } else {
-                    // TODO - reject login attempt if user doesn't exist
-                    Log.i("tag", "Nope")
+                for (userType in snapshot.children) {
+                    for (user in userType.children) {
+                        val name = user.child("username").value.toString()
+                        val pass = user.child("password").value.toString()
+                        val addr = user.child("address").value.toString()
+
+                        // If username and password match for given user
+                        if(username == name && password == pass) {
+                            Log.i(TAG, addr)
+
+                            loginSuccess = true
+
+                            // Save address to app preferences
+                            val editor = mPrefs.edit()
+                            editor.putString("address", addr)
+                            editor.commit()
+
+                            // Switch to appropriate interface
+                            if(userType.key == "residents") {
+                                val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
+                                startActivity(notificationIntent)
+                            } else if(userType.key == "collectors") {
+                                // TODO - switch to garbage collectors interface
+                            }
+                            break
+                        }
+                    }
+                }
+                // Reject login attempt if match not found
+                if(!loginSuccess) {
+                    Toast.makeText(
+                        this@PositionLogin,
+                        "Login failed",
+                        Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -105,7 +133,6 @@ class PositionLogin : Activity() {
             }
 
         })
-        //TODO - return true or false depending on whether login was successful
     }
 
     companion object {

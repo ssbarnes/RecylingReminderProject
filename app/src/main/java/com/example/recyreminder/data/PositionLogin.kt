@@ -58,6 +58,10 @@ class PositionLogin : Activity() {
 //            val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
 //            startActivity(notificationIntent)
 
+//             val mapsIntent = Intent(this@PositionLogin, GCMap::class.java)
+//             startActivity(mapsIntent)
+
+
         }
 
         //Resident Register

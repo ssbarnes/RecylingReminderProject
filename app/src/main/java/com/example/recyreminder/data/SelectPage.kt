@@ -9,7 +9,6 @@ import android.widget.Button
 import com.example.recyreminder.R
 
 class SelectPage: Activity() {
-
     protected lateinit var gcButton: Button
     protected lateinit var residentButton: Button
 
@@ -31,10 +30,9 @@ class SelectPage: Activity() {
 
     }
 
-    fun selectPosition(v: View) {
+    private fun selectPosition(v: View) {
         with (v as Button) {
-            val button: Intent
-            button = Intent(
+            val button: Intent = Intent(
                 this@SelectPage,
                 PositionLogin::class.java
             )

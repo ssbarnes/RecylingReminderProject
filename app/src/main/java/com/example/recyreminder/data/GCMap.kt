@@ -1,22 +1,35 @@
 package com.example.recyreminder.data
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.SharedPreferences
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.example.recyreminder.R
-
+import com.example.recyreminder.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.example.recyreminder.databinding.ActivityMapsBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class GCMap : AppCompatActivity(), OnMapReadyCallback{
 
+    private var database: DatabaseReference = Firebase.database.reference
+    private lateinit var mPrefs: SharedPreferences
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private var mContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +55,38 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val residents: DatabaseReference =
+            database.child("users/residents")
+
+        residents.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userAddress in snapshot.children) {
+                    var addressString = userAddress.value
+                    var addressCoords = getLocationFromAddress(mContext, addressString.toString())
+                    if(addressCoords != null) {
+                        mMap.addMarker(MarkerOptions().position(addressCoords!!).title(addressString.toString()))
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(PositionLogin.TAG, error.message)
+            }
+        })
+    }
+
+
+    fun getLocationFromAddress(context: Context?, address: String?): LatLng? {
+        val gCoder = Geocoder(context)
+
+        val address: List<Address>? = gCoder.getFromLocationName(address, 1)
+        if (address == null) {
+            return null
+        }
+        val loc = address[0]
+
+        return LatLng(loc.getLatitude(), loc.getLongitude())
     }
 
 }
+

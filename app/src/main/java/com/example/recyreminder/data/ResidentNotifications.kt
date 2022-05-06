@@ -37,18 +37,6 @@ class ResidentNotifications : Activity(){
         var adapter = MyRecyclerViewAdapter(names,R.layout.notification)
         mRecyclerView.adapter = adapter
 
-        //Here is where a list of notifications from firebase would be shown instead
-//        names.add("You have received a trash citation, please separate your recycles and trash items. This notification was sent on 5/2/2022")
-//        names.add("notification 2")
-//        names.add("notification 3")
-//        names.add("notification 3")
-//        names.add("notification 3")
-//        names.add("notification 3")
-//        names.add("notification 3")
-//        names.add("notification 3")
-//        names.add("notification 3")
-//        names.add("notification 3")
-//        names.add("notification 3")
 
         val savedAddress = mPrefs.getString("address", "").toString()
         Log.i(PositionLogin.TAG, savedAddress)

@@ -13,7 +13,7 @@
         android:layout_height="50dp"
         android:background="#000000"
         android:gravity="center"
-        android:text="Garbage Collector Menu:"
+        android:text="Report Violation:"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:layout_marginBottom="50dp"
@@ -21,29 +21,55 @@
         tools:layout_editor_absoluteY="237dp" />
 
     <EditText
+        android:id="@+id/address"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:hint="Give Resident Violation:"/>
+        android:hint="Address:"/>
+
+    <EditText
+        android:id="@+id/city"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:hint="City:"/>
+
+    <EditText
+        android:id="@+id/countryState"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:hint="Country/State:"/>
+
+    <EditText
+        android:id="@+id/zipCode"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:hint="Zip Code:"/>
+
+    <EditText
+        android:id="@+id/violation"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="30dp"
+        android:hint="Violation:"/>
 
     <Button
-        android:id="@+id/gc"
+        android:id="@+id/reportViolation"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_gravity="start"
         android:backgroundTint="#FF8000"
         android:layout_marginBottom="50dp"
         android:textColor="@color/white"
-        android:text="Garbage Collector"
+        android:text="Report Violation"
         tools:layout_editor_absoluteX="31dp"
         tools:layout_editor_absoluteY="237dp"/>
 
     <Button
-        android:id="@+id/resident"
+        android:id="@+id/viewMap"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_gravity="start"
         android:backgroundTint="#FF8000"
-        android:text="Resident"
+        android:text="View on Map"
         android:textColor="@color/white"
         tools:layout_editor_absoluteX="31dp"
         tools:layout_editor_absoluteY="237dp" />

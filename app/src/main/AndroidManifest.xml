@@ -48,7 +48,10 @@
             android:name=".data.ResidentNotifications"
             android:exported="true">
         </activity>
-
+        <activity
+            android:name=".data.GCReportViolation"
+            android:exported="true">
+        </activity>
         <activity
             android:name=".data.GCMap"
             android:exported="true">

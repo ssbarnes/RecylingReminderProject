@@ -49,7 +49,7 @@ class GCRegister: Activity() {
         newUser["position"] = "gc"
 
         val database = Firebase.database.reference
-        val usersRef: DatabaseReference = database.child("users")
+        val usersRef: DatabaseReference = database.child("users/collectors")
         val userRef = usersRef.child(username)
 
         userRef.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -57,7 +57,7 @@ class GCRegister: Activity() {
                 if (snapshot.exists()) {
                     // TODO - tell user they're already registered
                     Log.i(ResidentRegister.TAG, "Uh oh username already exists")
-                    Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT)
+                    Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.i(ResidentRegister.TAG, "Come on in")
                     userRef.setValue(newUser)

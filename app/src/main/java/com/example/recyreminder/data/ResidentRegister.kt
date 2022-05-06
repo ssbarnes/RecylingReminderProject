@@ -101,7 +101,7 @@ class ResidentRegister : Activity() {
         newUser["position"] = "resident"
 
         val database = Firebase.database.reference
-        val usersRef: DatabaseReference = database.child("users")
+        val usersRef: DatabaseReference = database.child("users/residents")
         val userRef = usersRef.child(addr)
 
         // Check if user already exists
@@ -110,7 +110,7 @@ class ResidentRegister : Activity() {
                 if (snapshot.exists()) {
                     // TODO - tell user they're already registered
                     Log.i(TAG, "Uh oh username already exists")
-                    Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT)
+                    Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.i(TAG, "Come on in")
                     userRef.setValue(newUser)

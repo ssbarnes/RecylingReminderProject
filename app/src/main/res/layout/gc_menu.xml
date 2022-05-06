@@ -52,7 +52,7 @@
         android:hint="Violation:"/>
 
     <Button
-        android:id="@+id/reportViolation"
+        android:id="@+id/report"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_gravity="start"

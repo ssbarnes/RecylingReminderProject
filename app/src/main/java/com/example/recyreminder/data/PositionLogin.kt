@@ -21,7 +21,6 @@ class PositionLogin : Activity() {
     private val database = Firebase.database.reference
     private lateinit var mPrefs: SharedPreferences
 
-    private lateinit var position: String
     private lateinit var login : Button
     private lateinit var register : Button
     private lateinit var registerGc: Button
@@ -35,9 +34,6 @@ class PositionLogin : Activity() {
 
         setContentView(R.layout.residents_login)
 
-        val button = intent
-        position = button.getStringExtra("position").toString()
-
 
         //Login button
         login = findViewById(R.id.resLogin)
@@ -45,13 +41,6 @@ class PositionLogin : Activity() {
             user = findViewById(R.id.resUsername)
             pass = findViewById(R.id.resPassword)
             login(user.text.toString(), pass.text.toString())
-
-            val signIn: Intent
-            if (position == "Garbage Collector") {
-
-            } else {
-
-            }
             //Move this into else once we can get type of
             //user from firebase
             //Go to notifications tab
@@ -114,6 +103,8 @@ class PositionLogin : Activity() {
                                 startActivity(notificationIntent)
                             } else if(userType.key == "collectors") {
                                 // TODO - switch to garbage collectors interface
+                                val reportingIntent = Intent(this@PositionLogin, GCReportViolation::class.java)
+                                startActivity(reportingIntent)
                             }
                             break
                         }

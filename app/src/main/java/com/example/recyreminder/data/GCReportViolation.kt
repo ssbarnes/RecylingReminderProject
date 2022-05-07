@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import com.example.recyreminder.R
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -93,6 +94,18 @@ class GCReportViolation: Activity() {
                 Log.i(ResidentRegister.TAG, error.message)
             }
         })
+
+        //resetting textView items to be blank
+        var add = findViewById(R.id.address) as TextView
+        add.text = ""
+        var city = findViewById(R.id.city) as TextView
+        city.text = ""
+        var CS = findViewById(R.id.countryState) as TextView
+        CS.text = ""
+        var zip = findViewById(R.id.zipCode) as TextView
+        zip.text = ""
+        var vio = findViewById(R.id.violation) as TextView
+        vio.text = ""
 
         Log.i(TAG, "Completed Report Violation function")
 

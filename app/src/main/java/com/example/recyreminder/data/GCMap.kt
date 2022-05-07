@@ -7,6 +7,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recyreminder.R
 import com.example.recyreminder.databinding.ActivityMapsBinding
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.io.IOException
 
 
 class GCMap : AppCompatActivity(), OnMapReadyCallback{
@@ -56,6 +58,10 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        val starterCoord = LatLng(39.0, -77.0)
+        val starterZoom = 6f
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(starterCoord, starterZoom))
 
         val residents: DatabaseReference =
             database.child("users/residents")
@@ -96,13 +102,21 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
     fun getLocationFromAddress(context: Context?, address: String?): LatLng? {
         val gCoder = Geocoder(context)
 
-        val address: List<Address>? = gCoder.getFromLocationName(address, 1)
-        if (address == null) {
-            return null
-        }
-        val loc = address[0]
+        try {
+            val address: List<Address>? = gCoder.getFromLocationName(address, 1)
+            if (address == null) {
+                return null
+            }
+            val loc = address[0]
 
-        return LatLng(loc.getLatitude(), loc.getLongitude())
+            return LatLng(loc.getLatitude(), loc.getLongitude())
+        } catch(exception: IOException) {
+            val dur = Toast.LENGTH_SHORT
+            val toast = Toast.makeText(applicationContext, "Cant load markers right now", dur)
+            toast.show()
+            exception.printStackTrace()
+        }
+        return null
     }
 
     companion object {

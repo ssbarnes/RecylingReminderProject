@@ -59,7 +59,7 @@ class ResidentNotifications : Activity(){
 
 
         var builder = NotificationCompat.Builder(this, "id")
-            .setSmallIcon(R.drawable.rectangle)
+            .setSmallIcon(android.R.drawable.ic_menu_delete)
             .setContentTitle("Trash Violation!")
             .setContentText("You have received a trash violation!")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

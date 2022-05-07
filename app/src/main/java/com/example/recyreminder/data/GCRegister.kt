@@ -33,7 +33,6 @@ class GCRegister: Activity() {
             pass = findViewById(R.id.gcRegPassword)
 
             sendData(user.text.toString(), pass.text.toString())
-            finish()
         }
 
     }
@@ -46,21 +45,36 @@ class GCRegister: Activity() {
         val newUser: MutableMap<String, Any> = HashMap()
         newUser["username"] = username
         newUser["password"] = password
-        newUser["position"] = "gc"
 
         val database = Firebase.database.reference
-        val usersRef: DatabaseReference = database.child("users/collectors")
-        val userRef = usersRef.child(username)
+        val usersRef: DatabaseReference = database.child("users")
+        val userRef = usersRef.child("collectors/" + username)
 
-        userRef.addListenerForSingleValueEvent(object: ValueEventListener {
+        usersRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    // TODO - tell user they're already registered
-                    Log.i(ResidentRegister.TAG, "Uh oh username already exists")
-                    Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT).show()
-                } else {
-                    Log.i(ResidentRegister.TAG, "Come on in")
+                var cont = true
+                for (userType in snapshot.children) {
+                    for (userN in userType.children) {
+                        val name = userN.child("username").value.toString()
+
+                        if(name == username) {
+                            cont = false
+                            Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT).show()
+                            Log.i(TAG, "Username already exists")
+                            user.setText("")
+                            pass.setText("")
+                            break
+                        }
+                    }
+
+                    if (!cont) { break }
+                }
+
+                if (cont) {
                     userRef.setValue(newUser)
+                    Log.i(TAG, "Registration complete")
+                    Toast.makeText(applicationContext, "Registration complete", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
             override fun onCancelled(error: DatabaseError) {

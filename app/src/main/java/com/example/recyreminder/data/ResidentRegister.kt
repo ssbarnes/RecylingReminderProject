@@ -49,9 +49,9 @@ class ResidentRegister : Activity() {
             zipCode = findViewById(R.id.resRegZipCode)
 
 
-            Log.i(TAG, user.text.toString())
-            Log.i(TAG, pass.text.toString())
-            Log.i(TAG, address.text.toString())
+//            Log.i(TAG, user.text.toString())
+//            Log.i(TAG, pass.text.toString())
+//            Log.i(TAG, address.text.toString())
 
 //            val newUser: MutableMap<String, Any> = HashMap()
 //            newUser["username"] = user.text.toString()
@@ -60,11 +60,22 @@ class ResidentRegister : Activity() {
 //
 //            sendData(newUser)
 
-            val newAddress = address.text.toString() + ", " + city.text.toString() + ", " +
-                    countryState.text.toString() + " " + zipCode.text.toString()
+            val editTextArr = arrayOf(user, pass, address, city, countryState, zipCode)
+            var cont = true
+            for (textElem in editTextArr) {
+                val textVal = textElem.text.toString()
+                if (textVal == "") {
+                    textElem.error = "REQUIRED"
+                    cont = false
+                }
+            }
 
-            sendData(user.text.toString(), pass.text.toString(), newAddress)
-            finish()
+            if (cont) {
+                val newAddress = address.text.toString() + ", " + city.text.toString() + ", " +
+                        countryState.text.toString() + " " + zipCode.text.toString()
+
+                sendData(user.text.toString(), pass.text.toString(), newAddress)
+            }
         }
 
         /* TODO - This is just a proof of concept. Move elsewhere as needed.
@@ -72,25 +83,25 @@ class ResidentRegister : Activity() {
             being changed in the database. Also consider creating notifications for
             specific street.
         */
-        val seifPassRef = usersRef.child("seif/password")
-
-        // Check if password for "seif" has changed
-        seifPassRef.addValueEventListener(object: ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val value = snapshot.getValue<String>()
-                Toast.makeText(applicationContext,
-                    "Password is now $value",
-                    Toast.LENGTH_LONG).show()
-                Log.d(TAG, "Password is now $value")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
-        })
+//        val seifPassRef = usersRef.child("seif/password")
+//
+//        // Check if password for "seif" has changed
+//        seifPassRef.addValueEventListener(object: ValueEventListener {
+//
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                val value = snapshot.getValue<String>()
+//                Toast.makeText(applicationContext,
+//                    "Password is now $value",
+//                    Toast.LENGTH_LONG).show()
+//                Log.d(TAG, "Password is now $value")
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Log.w(TAG, "Failed to read value.", error.toException())
+//            }
+//        })
     }
 
     private fun sendData(username: String, password: String, addr: String) {
@@ -100,19 +111,48 @@ class ResidentRegister : Activity() {
         newUser["address"] = addr
 
         val database = Firebase.database.reference
-        val usersRef: DatabaseReference = database.child("users/residents")
-        val userRef = usersRef.child(addr)
+        val usersRef: DatabaseReference = database.child("users")
+        val userRef = usersRef.child("residents/" + addr)
 
-        // Check if user already exists
-        userRef.addListenerForSingleValueEvent(object: ValueEventListener {
+        // Check if user and address already exists
+        usersRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    // TODO - tell user they're already registered
-                    Log.i(TAG, "Username already exists")
-                    Toast.makeText(applicationContext, "Username already exists", Toast.LENGTH_SHORT).show()
-                } else {
-                    Log.i(TAG, "Registration complete")
+                var cont = true
+                var message = ""
+                for (userType in snapshot.children) {
+                    for (userN in userType.children) {
+                        val name = userN.child("username").value.toString()
+                        val uAddr = userN.child("address").value.toString()
+
+                        if (name == username) {
+                            cont = false
+                            message += "Username already exists\n"
+                            user.setText("")
+                            pass.setText("")
+                        }
+                        if (uAddr == addr) {
+                            cont = false
+                            message += "Address already exists"
+                            address.setText("")
+                            city.setText("")
+                            countryState.setText("")
+                            zipCode.setText("")
+                        }
+                        if (!cont) {
+                            Log.i(TAG, message)
+                            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+                            break
+                        }
+                    }
+
+                    if (!cont) { break }
+                }
+
+                if (cont) {
                     userRef.setValue(newUser)
+                    Log.i(TAG, "Registration complete")
+                    Toast.makeText(applicationContext, "Registration complete", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -120,7 +160,6 @@ class ResidentRegister : Activity() {
             }
         })
 
-        Log.i(TAG, "Completed Resident Registration")
     }
 
     companion object {

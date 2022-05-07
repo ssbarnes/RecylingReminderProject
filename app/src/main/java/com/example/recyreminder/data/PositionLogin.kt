@@ -43,7 +43,21 @@ class PositionLogin : Activity() {
         login.setOnClickListener {
             user = findViewById(R.id.resUsername)
             pass = findViewById(R.id.resPassword)
-            login(user.text.toString(), pass.text.toString())
+
+            val editTextArr = arrayOf(user, pass)
+            var cont = true
+            for (textElem in editTextArr) {
+                val textVal = textElem.text.toString()
+                if (textVal == "") {
+                    textElem.error = "REQUIRED"
+                    cont = false
+                }
+            }
+
+            if (cont) {
+                login(user.text.toString(), pass.text.toString())
+            }
+
             //Move this into else once we can get type of
             //user from firebase
             //Go to notifications tab

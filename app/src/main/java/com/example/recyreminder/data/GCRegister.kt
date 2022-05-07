@@ -32,15 +32,28 @@ class GCRegister: Activity() {
             user = findViewById(R.id.gcRegUsername)
             pass = findViewById(R.id.gcRegPassword)
 
-            sendData(user.text.toString(), pass.text.toString())
+
+
+            val editTextArr = arrayOf(user, pass)
+            var cont = true
+            for (textElem in editTextArr) {
+                val textVal = textElem.text.toString()
+                if (textVal == "") {
+                    textElem.error = "REQUIRED"
+                    cont = false
+                }
+            }
+
+            if (cont) {
+                sendData(user.text.toString(), pass.text.toString())
+            }
+
         }
 
     }
 
     fun sendData(username: String, password: String) {
         //TODO - post data to firebase database
-//        Log.i(TAG, username)
-//        Log.i(TAG, password)
 
         val newUser: MutableMap<String, Any> = HashMap()
         newUser["username"] = username
@@ -50,6 +63,7 @@ class GCRegister: Activity() {
         val usersRef: DatabaseReference = database.child("users")
         val userRef = usersRef.child("collectors/" + username)
 
+        // Check if user already exists
         usersRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var cont = true
@@ -82,7 +96,6 @@ class GCRegister: Activity() {
             }
         })
 
-        Log.i(TAG, "Completed GC Registration")
     }
 
     companion object {

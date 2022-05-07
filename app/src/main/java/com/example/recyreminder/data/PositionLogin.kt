@@ -16,11 +16,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlin.math.log
 
 class PositionLogin : Activity() {
     private val database = Firebase.database.reference
     private lateinit var mPrefs: SharedPreferences
-
+    private lateinit var position : String
     private lateinit var login : Button
     private lateinit var register : Button
     private lateinit var registerGc: Button
@@ -34,6 +35,8 @@ class PositionLogin : Activity() {
 
         setContentView(R.layout.residents_login)
 
+        val positionVal = getIntent()
+        position = positionVal.getStringExtra("position")!!
 
         //Login button
         login = findViewById(R.id.resLogin)
@@ -75,43 +78,77 @@ class PositionLogin : Activity() {
         Log.i("tag", password)
 
         val usersRef: DatabaseReference = database.child("users")
+        val userRef = usersRef.child(position)
         var loginSuccess = false
 
         // Go through entire database checking for username and password
-        usersRef.addValueEventListener(object: ValueEventListener {
+        userRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (userType in snapshot.children) {
-                    for (user in userType.children) {
-                        val name = user.child("username").value.toString()
-                        val pass = user.child("password").value.toString()
-                        val addr = user.child("address").value.toString()
+//                for (userType in snapshot.children) {
+//                    for (user in userType.children) {
+//                        val name = user.child("username").value.toString()
+//                        val pass = user.child("password").value.toString()
+//                        val addr = user.child("address").value.toString()
+//
+//                        // If username and password match for given user
+//                        if(username == name && password == pass) {
+//                            Log.i(TAG, addr)
+//
+//                            loginSuccess = true
+//
+//                            // Save address to app preferences
+//                            val editor = mPrefs.edit()
+//                            editor.putString("address", addr)
+//                            editor.commit()
+//
+//                            // Switch to appropriate interface
+//                            if(userType.key == "residents") {
+//                                val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
+//                                startActivity(notificationIntent)
+//                            } else if(userType.key == "collectors") {
+//                                // TODO - switch to garbage collectors interface
+//                                val reportingIntent = Intent(this@PositionLogin, GCReportViolation::class.java)
+//                                startActivity(reportingIntent)
+//                            }
+//                            break
+//                        }
+//                    }
+//                }
+                // Reject login attempt if match not found
+//                if(!loginSuccess) {
+//                    Toast.makeText(
+//                        this@PositionLogin,
+//                        "Login failed",
+//                        Toast.LENGTH_LONG).show()
+//                }
+                for (user in snapshot.children) {
+                    val name = user.child("username").value.toString()
+                    val passW = user.child("password").value.toString()
 
-                        // If username and password match for given user
-                        if(username == name && password == pass) {
-                            Log.i(TAG, addr)
+                    if (name == username && passW == password) {
+                        loginSuccess = true
 
-                            loginSuccess = true
-
-                            // Save address to app preferences
+                        if (position == "residents") {
+                            val addr = user.child("address").value.toString()
                             val editor = mPrefs.edit()
                             editor.putString("address", addr)
                             editor.commit()
-
-                            // Switch to appropriate interface
-                            if(userType.key == "residents") {
-                                val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
-                                startActivity(notificationIntent)
-                            } else if(userType.key == "collectors") {
-                                // TODO - switch to garbage collectors interface
-                                val reportingIntent = Intent(this@PositionLogin, GCReportViolation::class.java)
-                                startActivity(reportingIntent)
-                            }
-                            break
                         }
+
+                        break
                     }
                 }
-                // Reject login attempt if match not found
-                if(!loginSuccess) {
+
+                if (loginSuccess) {
+                    if (position == "residents") {
+                        val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
+                        startActivity(notificationIntent)
+                    } else {
+                        val reportingIntent = Intent(this@PositionLogin, GCReportViolation::class.java)
+                        startActivity(reportingIntent)
+                    }
+                } else {
+                    pass.setText("")
                     Toast.makeText(
                         this@PositionLogin,
                         "Login failed",

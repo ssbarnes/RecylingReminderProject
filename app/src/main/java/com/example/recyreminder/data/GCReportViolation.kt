@@ -2,6 +2,7 @@ package com.example.recyreminder.data
 
 import android.util.Log
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import com.example.recyreminder.R
@@ -32,12 +33,13 @@ class GCReportViolation: Activity() {
 
         Log.i(TAG, "Entered GC Menu/Reporting Violation")
 
+        address = findViewById(R.id.address)
+        city = findViewById(R.id.city)
+        countryState = findViewById(R.id.countryState)
+        zipCode = findViewById(R.id.zipCode)
+
         report = findViewById(R.id.report)
         report.setOnClickListener {
-            address = findViewById(R.id.address)
-            city = findViewById(R.id.city)
-            countryState = findViewById(R.id.countryState)
-            zipCode = findViewById(R.id.zipCode)
             violation = findViewById(R.id.violation)
 
             val addr = address.text.toString() + ", " + city.text.toString() + ", " +
@@ -45,6 +47,16 @@ class GCReportViolation: Activity() {
 
             reportViolation(addr, violation.text.toString())
 
+        }
+
+        viewMap = findViewById(R.id.map)
+        viewMap.setOnClickListener {
+            val mapIntent = Intent(
+                this@GCReportViolation,
+                GCMap::class.java
+            )
+
+            startActivityForResult(mapIntent, 1)
         }
     }
 
@@ -86,7 +98,22 @@ class GCReportViolation: Activity() {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        //super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            val fullAddress = data.getStringExtra("address")
+            val addrSplit = fullAddress!!.split(",")
+            val csz = addrSplit[2].trim().split(" ")
+            Log.i(TAG, "FULL: " + fullAddress + " SPLIT: " + addrSplit + " SPLITAGAIN: " + csz)
+            address.setText(addrSplit[0].trim())
+            city.setText(addrSplit[1].trim())
+            countryState.setText(csz[0])
+            zipCode.setText(csz[1])
+        }
+    }
+
     companion object {
+        private const val REQUEST_CODE = 1
         const val TAG = "Recycling Reminder"
     }
 }

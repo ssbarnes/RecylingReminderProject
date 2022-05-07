@@ -36,7 +36,13 @@ class SelectPage: Activity() {
                 this@SelectPage,
                 PositionLogin::class.java
             )
-            button.putExtra("position", v.text)
+
+            var position = "residents"
+
+            if (v.text.toString() == "Garbage Collector") {
+                position = "collectors"
+            }
+            button.putExtra("position", position)
             startActivity(button)
         }
     }

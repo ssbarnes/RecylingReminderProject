@@ -61,10 +61,11 @@
         android:textColor="@color/white"
         android:text="Report Violation"
         tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="237dp"/>
+        tools:layout_editor_absoluteY="237dp"
+        android:layout_alignRight="@+id/map"/>
 
     <Button
-        android:id="@+id/viewMap"
+        android:id="@+id/map"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_gravity="start"

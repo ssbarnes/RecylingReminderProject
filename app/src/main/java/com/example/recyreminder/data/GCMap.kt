@@ -1,6 +1,7 @@
 package com.example.recyreminder.data
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.location.Address
 import android.location.Geocoder
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -61,10 +63,13 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
         residents.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (userAddress in snapshot.children) {
-                    var addressString = userAddress.value
+                    var addressString = userAddress.key
                     var addressCoords = getLocationFromAddress(mContext, addressString.toString())
                     if(addressCoords != null) {
-                        mMap.addMarker(MarkerOptions().position(addressCoords!!).title(addressString.toString()))
+                        val mMarker = mMap.addMarker(MarkerOptions().position(addressCoords!!).title(addressString.toString()))
+//                        mMap.setOnMarkerClickListener {
+//                            onMarkerClick(mMarker!!)
+//                        }
                     }
                 }
             }
@@ -73,8 +78,20 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
                 Log.e(PositionLogin.TAG, error.message)
             }
         })
+
+        mMap.setOnMarkerClickListener {
+            onMarkerClick(it)
+        }
+
     }
 
+    fun onMarkerClick(marker: Marker): Boolean {
+        //Log.i(TAG, "THIS IS A MARKER CLICKER: " + marker.title)
+        var savedAddress = Intent().putExtra("address", marker.title.toString())
+        setResult(RESULT_OK, savedAddress)
+        finish()
+        return true
+    }
 
     fun getLocationFromAddress(context: Context?, address: String?): LatLng? {
         val gCoder = Geocoder(context)
@@ -86,6 +103,10 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
         val loc = address[0]
 
         return LatLng(loc.getLatitude(), loc.getLongitude())
+    }
+
+    companion object {
+        const val TAG = "Recycling Reminder"
     }
 
 }

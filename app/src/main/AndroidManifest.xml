@@ -23,7 +23,8 @@
 
         <activity
             android:name=".data.PositionLogin"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
         </activity>
         <activity
             android:name=".data.SelectPage"

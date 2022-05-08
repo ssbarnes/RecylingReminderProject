@@ -112,6 +112,12 @@ class GCReportViolation: Activity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (false) {
+            super.onBackPressed()
+        }
+    }
+
     companion object {
         private const val REQUEST_CODE = 1
         const val TAG = "Recycling Reminder"

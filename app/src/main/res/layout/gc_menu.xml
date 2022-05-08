@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
@@ -9,70 +10,95 @@
     tools:context=".data.SelectPage">
 
     <TextView
+        android:id="@+id/text"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:background="#000000"
         android:gravity="center"
         android:text="Report Violation:"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentTop="true"
         android:textColor="@color/white"
-        android:textSize="24sp"
-        android:layout_marginBottom="50dp"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="237dp" />
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/address"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
         android:hint="Address:"/>
 
     <EditText
         android:id="@+id/city"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/address"
         android:hint="City:"/>
 
     <EditText
         android:id="@+id/countryState"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/city"
         android:hint="Country/State:"/>
 
     <EditText
         android:id="@+id/zipCode"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/countryState"
         android:hint="Zip Code:"/>
 
     <EditText
         android:id="@+id/violation"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_below="@id/zipCode"
         android:layout_marginBottom="30dp"
         android:hint="Violation:"/>
 
     <Button
         android:id="@+id/report"
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/violation"
         android:backgroundTint="#FF8000"
-        android:layout_marginBottom="50dp"
-        android:textColor="@color/white"
         android:text="Report Violation"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="237dp"
-        android:layout_alignRight="@+id/map"/>
+        android:layout_marginBottom="50dp"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/map"
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/violation"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:backgroundTint="#FF8000"
         android:text="View on Map"
-        android:textColor="@color/white"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="237dp" />
+        android:textColor="@color/white" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF8000"
+        android:text="Logout"
+        android:layout_marginBottom="40dp"
+        android:layout_below="@id/report"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/unregister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF8000"
+        android:text="UnRegister"
+        android:layout_below="@id/logout"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

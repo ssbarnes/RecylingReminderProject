@@ -108,7 +108,7 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
 
             return LatLng(loc.getLatitude(), loc.getLongitude())
         } catch(exception: IOException) {
-            val dur = Toast.LENGTH_SHORT
+            val dur = Toast.LENGTH_LONG
             val toast = Toast.makeText(applicationContext, "Cant load markers right now", dur)
             toast.show()
             exception.printStackTrace()

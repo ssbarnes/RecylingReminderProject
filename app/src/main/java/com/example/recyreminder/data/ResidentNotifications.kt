@@ -90,10 +90,10 @@ class ResidentNotifications : Activity(){
                 adapter = MyRecyclerViewAdapter(names,R.layout.notification)
                 mRecyclerView.adapter = adapter
                 //send the notification
-//                with(NotificationManagerCompat.from(applicationContext)) {
-//                    // notificationId is a unique int for each notification that you must define
-//                    notify(1, builder.build())
-//                }
+                with(NotificationManagerCompat.from(applicationContext)) {
+                    // notificationId is a unique int for each notification that you must define
+                    notify(1, builder.build())
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

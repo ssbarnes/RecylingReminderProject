@@ -31,6 +31,9 @@ class ResidentNotifications : Activity(){
     private var id = "id"
     private lateinit var logout : Button
 
+    private lateinit var unregister : Button
+    private lateinit var username : String
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -75,18 +78,22 @@ class ResidentNotifications : Activity(){
         // Display all user notifications
         violationsRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                names.clear()
                 for (violation in snapshot.children) {
-                    if(!names.contains(violation.value as String)) {
-                        names.add(0, violation.value as String)
-                        adapter.notifyItemChanged(0)
-                    }
+                    names.add(0, violation.value.toString())
+//                    if(!names.contains(violation.value as String)) {
+//                        names.add(0, violation.value as String)
+//                        adapter.notifyItemChanged(0)
+//                    }
 
                 }
+                adapter = MyRecyclerViewAdapter(names,R.layout.notification)
+                mRecyclerView.adapter = adapter
                 //send the notification
-                with(NotificationManagerCompat.from(applicationContext)) {
-                    // notificationId is a unique int for each notification that you must define
-                    notify(1, builder.build())
-                }
+//                with(NotificationManagerCompat.from(applicationContext)) {
+//                    // notificationId is a unique int for each notification that you must define
+//                    notify(1, builder.build())
+//                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -99,6 +106,43 @@ class ResidentNotifications : Activity(){
             Toast.makeText(applicationContext, "Logging out...", Toast.LENGTH_SHORT).show()
             finish()
         }
+
+        val userVal = getIntent()
+        username = userVal.getStringExtra("username")!!
+        unregister = findViewById(R.id.unregister)
+
+        unregister.setOnClickListener {
+            unregisterAccount()
+        }
+
+    }
+
+    fun unregisterAccount() {
+        val database = Firebase.database.reference
+        val usersRef: DatabaseReference = database.child("users")
+        val userRef = usersRef.child("residents")
+
+        userRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var found = false
+
+                for (user in snapshot.children) {
+                    if (user.child("username").value.toString() == username) {
+                        found = true
+                        user.ref.removeValue()
+                        break
+                    }
+                }
+
+                if (found) {
+                    Toast.makeText(applicationContext, "Account unregistered", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.i(ResidentRegister.TAG, error.message)
+            }
+        })
 
     }
 
@@ -123,6 +167,10 @@ class ResidentNotifications : Activity(){
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    companion object {
+        const val TAG = "Recycling Reminder"
     }
 
 }

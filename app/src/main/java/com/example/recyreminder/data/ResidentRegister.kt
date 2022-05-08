@@ -78,30 +78,6 @@ class ResidentRegister : Activity() {
             }
         }
 
-        /* TODO - This is just a proof of concept. Move elsewhere as needed.
-            This is an example of the app responding to the password for a user
-            being changed in the database. Also consider creating notifications for
-            specific street.
-        */
-//        val seifPassRef = usersRef.child("seif/password")
-//
-//        // Check if password for "seif" has changed
-//        seifPassRef.addValueEventListener(object: ValueEventListener {
-//
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                val value = snapshot.getValue<String>()
-//                Toast.makeText(applicationContext,
-//                    "Password is now $value",
-//                    Toast.LENGTH_LONG).show()
-//                Log.d(TAG, "Password is now $value")
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Log.w(TAG, "Failed to read value.", error.toException())
-//            }
-//        })
     }
 
     private fun sendData(username: String, password: String, addr: String) {

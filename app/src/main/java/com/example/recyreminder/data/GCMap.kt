@@ -72,10 +72,7 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
                     var addressString = userAddress.key
                     var addressCoords = getLocationFromAddress(mContext, addressString.toString())
                     if(addressCoords != null) {
-                        val mMarker = mMap.addMarker(MarkerOptions().position(addressCoords!!).title(addressString.toString()))
-//                        mMap.setOnMarkerClickListener {
-//                            onMarkerClick(mMarker!!)
-//                        }
+                        mMap.addMarker(MarkerOptions().position(addressCoords!!).title(addressString.toString()))
                     }
                 }
             }

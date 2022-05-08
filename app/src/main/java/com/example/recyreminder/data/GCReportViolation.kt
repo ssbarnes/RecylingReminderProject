@@ -164,7 +164,6 @@ class GCReportViolation: Activity() {
             val fullAddress = data?.getStringExtra("address")
             val addrSplit = fullAddress!!.split(",")
             val csz = addrSplit[2].trim().split(" ")
-            Log.i(TAG, "FULL: " + fullAddress + " SPLIT: " + addrSplit + " SPLITAGAIN: " + csz)
             address.setText(addrSplit[0].trim())
             city.setText(addrSplit[1].trim())
             countryState.setText(csz[0])

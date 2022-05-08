@@ -45,7 +45,7 @@ class ResidentNotifications : Activity(){
         mRecyclerView.layoutManager = LinearLayoutManager(this)
 
         // Set up the adapter
-        val names = ArrayList<String>()
+        var names = ArrayList<String>()
         var adapter = MyRecyclerViewAdapter(names,R.layout.notification)
         mRecyclerView.adapter = adapter
 
@@ -76,8 +76,11 @@ class ResidentNotifications : Activity(){
         violationsRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (violation in snapshot.children) {
-                    names.add(0, violation.value as String)
-                    adapter.notifyItemChanged(0)
+                    if(!names.contains(violation.value as String)) {
+                        names.add(0, violation.value as String)
+                        adapter.notifyItemChanged(0)
+                    }
+
                 }
                 //send the notification
                 with(NotificationManagerCompat.from(applicationContext)) {

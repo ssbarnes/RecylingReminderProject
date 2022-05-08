@@ -86,11 +86,11 @@
         android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/report"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="#FF8000"
         android:text="Logout"
-        android:layout_marginBottom="40dp"
-        android:layout_below="@id/report"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/unregister"

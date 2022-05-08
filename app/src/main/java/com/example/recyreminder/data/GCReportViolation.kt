@@ -75,7 +75,6 @@ class GCReportViolation: Activity() {
 
         unregister.setOnClickListener {
             unregisterAccount()
-            finish()
         }
 
     }
@@ -141,6 +140,7 @@ class GCReportViolation: Activity() {
 
                 for (user in snapshot.children) {
                     if (user.key.toString() == username) {
+                        found = true
                         user.ref.removeValue()
                         break
                     }
@@ -155,6 +155,7 @@ class GCReportViolation: Activity() {
                 Log.i(ResidentRegister.TAG, error.message)
             }
         })
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

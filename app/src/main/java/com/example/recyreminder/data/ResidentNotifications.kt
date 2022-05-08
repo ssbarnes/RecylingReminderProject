@@ -11,6 +11,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +29,7 @@ class ResidentNotifications : Activity(){
     private var database: DatabaseReference = Firebase.database.reference
     private lateinit var mPrefs: SharedPreferences
     private var id = "id"
+    private lateinit var logout : Button
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +90,19 @@ class ResidentNotifications : Activity(){
                 Log.e(PositionLogin.TAG, error.message)
             }
         })
+
+        logout = findViewById(R.id.logout)
+        logout.setOnClickListener {
+            Toast.makeText(applicationContext, "Logging out...", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+    }
+
+    override fun onBackPressed() {
+        if (false) {
+            super.onBackPressed()
+        }
     }
 
     private fun createNotificationChannel() {

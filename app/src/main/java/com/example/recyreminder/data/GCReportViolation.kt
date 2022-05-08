@@ -27,6 +27,9 @@ class GCReportViolation: Activity() {
     private lateinit var violation: EditText
     private lateinit var report : Button
     private lateinit var viewMap : Button
+    private lateinit var logout : Button
+    private lateinit var unregister : Button
+    private lateinit var username : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +62,22 @@ class GCReportViolation: Activity() {
 
             startActivityForResult(mapIntent, 1)
         }
+
+        logout = findViewById(R.id.logout)
+        logout.setOnClickListener {
+            Toast.makeText(applicationContext, "Logging out...", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+        val userVal = getIntent()
+        username = userVal.getStringExtra("username")!!
+        unregister = findViewById(R.id.unregister)
+
+        unregister.setOnClickListener {
+            unregisterAccount()
+            finish()
+        }
+
     }
 
     fun reportViolation(addr: String, violation: String) {
@@ -111,10 +130,37 @@ class GCReportViolation: Activity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    fun unregisterAccount() {
+        val database = Firebase.database.reference
+        val usersRef: DatabaseReference = database.child("users")
+        val userRef = usersRef.child("collectors")
+
+        userRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var found = false
+
+                for (user in snapshot.children) {
+                    if (user.key.toString() == username) {
+                        user.ref.removeValue()
+                        break
+                    }
+                }
+
+                if (found) {
+                    Toast.makeText(applicationContext, "Account unregistered", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.i(ResidentRegister.TAG, error.message)
+            }
+        })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == 1) {
-            val fullAddress = data.getStringExtra("address")
+            val fullAddress = data?.getStringExtra("address")
             val addrSplit = fullAddress!!.split(",")
             val csz = addrSplit[2].trim().split(" ")
             Log.i(TAG, "FULL: " + fullAddress + " SPLIT: " + addrSplit + " SPLITAGAIN: " + csz)
@@ -122,6 +168,12 @@ class GCReportViolation: Activity() {
             city.setText(addrSplit[1].trim())
             countryState.setText(csz[0])
             zipCode.setText(csz[1])
+        }
+    }
+
+    override fun onBackPressed() {
+        if (false) {
+            super.onBackPressed()
         }
     }
 

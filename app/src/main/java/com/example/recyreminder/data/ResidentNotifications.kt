@@ -63,8 +63,8 @@ class ResidentNotifications : Activity(){
 
         var builder = NotificationCompat.Builder(this, "id")
             .setSmallIcon(android.R.drawable.ic_menu_delete)
-            .setContentTitle("Trash Violation!")
-            .setContentText("You have received a trash violation!")
+            .setContentTitle("Garbage Violation!")
+            .setContentText("You have received a garbage violation!")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

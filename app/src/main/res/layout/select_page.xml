@@ -13,7 +13,7 @@
         android:layout_height="50dp"
         android:background="#000000"
         android:gravity="center"
-        android:text="Garbage Collector"
+        android:text="Login Type"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:layout_marginBottom="50dp"

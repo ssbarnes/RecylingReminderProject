@@ -156,9 +156,11 @@ class PositionLogin : Activity() {
                 if (loginSuccess) {
                     if (position == "residents") {
                         val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)
+                        notificationIntent.putExtra("username", username)
                         startActivity(notificationIntent)
                     } else {
                         val reportingIntent = Intent(this@PositionLogin, GCReportViolation::class.java)
+                        reportingIntent.putExtra("username", username)
                         startActivity(reportingIntent)
                     }
                 } else {

@@ -95,7 +95,7 @@ class GCReportViolation: Activity() {
                     if (user.key == addr) {
                         Log.i(TAG, "ADDRESS FOUND")
                         var violations = user.child("violations")
-                        val addViolations = usersRef.child("residents/" + addr + "/violations/Notification " + (violations.childrenCount + 1))
+                        val addViolations = usersRef.child("residents/" + addr + "/violations/Notification " + (violations.childrenCount + 10))
                         notFound = false
                         addViolations.setValue(currDate.toString() + ": " + violation)
                         break

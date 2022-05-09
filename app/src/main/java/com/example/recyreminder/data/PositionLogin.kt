@@ -19,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 import kotlin.math.log
 
 class PositionLogin : Activity() {
+    // Lateinit variables
     private val database = Firebase.database.reference
     private lateinit var mPrefs: SharedPreferences
     private lateinit var position : String
@@ -35,7 +36,7 @@ class PositionLogin : Activity() {
 
         setContentView(R.layout.residents_login)
 
-        val positionVal = getIntent()
+        val positionVal = getIntent() // gets position val from select page
         position = positionVal.getStringExtra("position")!!
 
         //Login button
@@ -44,6 +45,7 @@ class PositionLogin : Activity() {
             user = findViewById(R.id.resUsername)
             pass = findViewById(R.id.resPassword)
 
+            // Checks if values have been added
             val editTextArr = arrayOf(user, pass)
             var cont = true
             for (textElem in editTextArr) {
@@ -76,6 +78,7 @@ class PositionLogin : Activity() {
         }
     }
 
+    // Checks if username and password exists in the position directory from firebase
     fun login(username: String, password: String) {
         Log.i("tag", username)
         Log.i("tag", password)
@@ -105,6 +108,7 @@ class PositionLogin : Activity() {
                     }
                 }
 
+                // Opens appropriate position menu
                 if (loginSuccess) {
                     if (position == "residents") {
                         val notificationIntent = Intent(this@PositionLogin, ResidentNotifications::class.java)

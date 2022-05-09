@@ -39,6 +39,7 @@ class ResidentRegister : Activity() {
 
         Log.i(TAG, "Entered Resident Registration")
 
+        // Text fields for registering account
         register = findViewById(R.id.resRegRegister)
         register.setOnClickListener {
             user = findViewById(R.id.resRegUsername)
@@ -48,18 +49,7 @@ class ResidentRegister : Activity() {
             countryState = findViewById(R.id.resRegCountryState)
             zipCode = findViewById(R.id.resRegZipCode)
 
-
-//            Log.i(TAG, user.text.toString())
-//            Log.i(TAG, pass.text.toString())
-//            Log.i(TAG, address.text.toString())
-
-//            val newUser: MutableMap<String, Any> = HashMap()
-//            newUser["username"] = user.text.toString()
-//            newUser["password"] = pass.text.toString()
-//            newUser["address"] = address.text.toString()
-//
-//            sendData(newUser)
-
+            // Checks if fields are not empty
             val editTextArr = arrayOf(user, pass, address, city, countryState, zipCode)
             var cont = true
             for (textElem in editTextArr) {
@@ -80,6 +70,7 @@ class ResidentRegister : Activity() {
 
     }
 
+    // Send data to firebase and create account
     private fun sendData(username: String, password: String, addr: String) {
         val newUser: MutableMap<String, Any> = HashMap()
         newUser["username"] = username

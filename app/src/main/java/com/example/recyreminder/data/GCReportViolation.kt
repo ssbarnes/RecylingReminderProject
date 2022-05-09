@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class GCReportViolation: Activity() {
-
+    // Lateinit variables to use later
     private lateinit var address: EditText
     private lateinit var city: EditText
     private lateinit var countryState: EditText
@@ -37,38 +37,57 @@ class GCReportViolation: Activity() {
 
         Log.i(TAG, "Entered GC Menu/Reporting Violation")
 
+        // Text fields are initialized
         address = findViewById(R.id.address)
         city = findViewById(R.id.city)
         countryState = findViewById(R.id.countryState)
         zipCode = findViewById(R.id.zipCode)
 
+        // Button for reporting violation
         report = findViewById(R.id.report)
         report.setOnClickListener {
             violation = findViewById(R.id.violation)
 
-            val addr = address.text.toString() + ", " + city.text.toString() + ", " +
-                    countryState.text.toString() + " " + zipCode.text.toString()
+            // Checks if text fields have been entered properly
+            val editTextArr = arrayOf(address, city, countryState, zipCode, violation)
+            var cont = true
+            for (textElem in editTextArr) {
+                val textVal = textElem.text.toString()
+                if (textVal == "") {
+                    textElem.error = "REQUIRED"
+                    cont = false
+                }
+            }
 
-            reportViolation(addr, violation.text.toString())
+            if (cont) {
+                // Formats address
+                val addr = address.text.toString() + ", " + city.text.toString() + ", " +
+                        countryState.text.toString() + " " + zipCode.text.toString()
+
+                reportViolation(addr, violation.text.toString()) // reports address with violation
+            }
 
         }
 
+        // View map button
         viewMap = findViewById(R.id.map)
         viewMap.setOnClickListener {
             val mapIntent = Intent(
                 this@GCReportViolation,
                 GCMap::class.java
-            )
+            ) // starts GCMap activity with result expected
 
             startActivityForResult(mapIntent, 1)
         }
 
+        //Logout button
         logout = findViewById(R.id.logout)
         logout.setOnClickListener {
             Toast.makeText(applicationContext, "Logging out...", Toast.LENGTH_SHORT).show()
             finish()
         }
 
+        // Unregister by getting username to remove from firebase
         val userVal = getIntent()
         username = userVal.getStringExtra("username")!!
         unregister = findViewById(R.id.unregister)
@@ -79,6 +98,7 @@ class GCReportViolation: Activity() {
 
     }
 
+    // Report violation and search if address exists
     fun reportViolation(addr: String, violation: String) {
         val database = Firebase.database.reference
         val usersRef: DatabaseReference = database.child("users")
@@ -89,6 +109,7 @@ class GCReportViolation: Activity() {
 
         var notFound = true
 
+        // Checks if address exists
         userRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (user in snapshot.children) {
@@ -129,6 +150,7 @@ class GCReportViolation: Activity() {
 
     }
 
+    // Removes account by searching until finding username associated with firebase account
     fun unregisterAccount() {
         val database = Firebase.database.reference
         val usersRef: DatabaseReference = database.child("users")
@@ -158,6 +180,7 @@ class GCReportViolation: Activity() {
 
     }
 
+    // Gets result from GCMap and converts it to an address to be used and report violation
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == 1) {
@@ -171,6 +194,7 @@ class GCReportViolation: Activity() {
         }
     }
 
+    // Disable back button
     override fun onBackPressed() {
         if (false) {
             super.onBackPressed()

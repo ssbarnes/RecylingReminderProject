@@ -63,7 +63,7 @@ class ResidentNotifications : Activity(){
         val notifIntent = Intent(this, ResidentNotifications::class.java)
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, notifIntent, PendingIntent.FLAG_IMMUTABLE)
 
-
+        // For sending notifications
         var builder = NotificationCompat.Builder(this, "id")
             .setSmallIcon(android.R.drawable.ic_menu_delete)
             .setContentTitle("Garbage Violation!")
@@ -78,14 +78,9 @@ class ResidentNotifications : Activity(){
         // Display all user notifications
         violationsRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                names.clear()
+                names.clear() // clears names and re-adds to recyclerview
                 for (violation in snapshot.children) {
                     names.add(0, violation.value.toString())
-//                    if(!names.contains(violation.value as String)) {
-//                        names.add(0, violation.value as String)
-//                        adapter.notifyItemChanged(0)
-//                    }
-
                 }
                 adapter = MyRecyclerViewAdapter(names,R.layout.notification)
                 mRecyclerView.adapter = adapter
@@ -101,12 +96,14 @@ class ResidentNotifications : Activity(){
             }
         })
 
+        // Logout of resident
         logout = findViewById(R.id.logout)
         logout.setOnClickListener {
             Toast.makeText(applicationContext, "Logging out...", Toast.LENGTH_SHORT).show()
             finish()
         }
 
+        // Unregister account as resident
         val userVal = getIntent()
         username = userVal.getStringExtra("username")!!
         unregister = findViewById(R.id.unregister)
@@ -117,6 +114,7 @@ class ResidentNotifications : Activity(){
 
     }
 
+    // Removes account based off username given
     fun unregisterAccount() {
         val database = Firebase.database.reference
         val usersRef: DatabaseReference = database.child("users")
@@ -146,12 +144,14 @@ class ResidentNotifications : Activity(){
 
     }
 
+    // Disable back press
     override fun onBackPressed() {
         if (false) {
             super.onBackPressed()
         }
     }
 
+    // Creates notification
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library

@@ -29,6 +29,7 @@ import java.io.IOException
 
 class GCMap : AppCompatActivity(), OnMapReadyCallback{
 
+    // Lateinit variables to use later
     private var database: DatabaseReference = Firebase.database.reference
     private lateinit var mPrefs: SharedPreferences
     private lateinit var mMap: GoogleMap
@@ -38,6 +39,7 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Setup layout for map
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -82,12 +84,14 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
             }
         })
 
+        // Adds markers to be clicked when tapped on
         mMap.setOnMarkerClickListener {
             onMarkerClick(it)
         }
 
     }
 
+    // If tapped on, will end activity and return the address
     fun onMarkerClick(marker: Marker): Boolean {
         //Log.i(TAG, "THIS IS A MARKER CLICKER: " + marker.title)
         var savedAddress = Intent().putExtra("address", marker.title.toString())
@@ -96,6 +100,7 @@ class GCMap : AppCompatActivity(), OnMapReadyCallback{
         return true
     }
 
+    // Gets location from address and gets latitude and longitude to add to marker
     fun getLocationFromAddress(context: Context?, address: String?): LatLng? {
         val gCoder = Geocoder(context)
 

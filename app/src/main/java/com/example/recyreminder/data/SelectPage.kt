@@ -21,9 +21,11 @@ class SelectPage: Activity() {
         gcButton = findViewById(R.id.gc)
         residentButton = findViewById(R.id.resident)
 
+        // GC button
         gcButton.setOnClickListener {
             selectPosition(it)
         }
+        // Resident button
         residentButton.setOnClickListener {
             selectPosition(it)
         }
@@ -38,7 +40,7 @@ class SelectPage: Activity() {
             )
 
             var position = "residents"
-
+            // Sends intent with position text
             if (v.text.toString() == "Garbage Collector") {
                 position = "collectors"
             }

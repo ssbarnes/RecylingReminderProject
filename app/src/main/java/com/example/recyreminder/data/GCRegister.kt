@@ -17,6 +17,7 @@ import java.util.HashMap
 
 class GCRegister: Activity() {
 
+    // Lateinit variables to be used
     private lateinit var register : Button
     private lateinit var user : EditText
     private lateinit var pass : EditText
@@ -27,13 +28,13 @@ class GCRegister: Activity() {
 
         Log.i(TAG, "Entered GC Registration")
 
+        // register button for registering accoutn
         register = findViewById(R.id.gcRegRegister)
         register.setOnClickListener {
             user = findViewById(R.id.gcRegUsername)
             pass = findViewById(R.id.gcRegPassword)
 
-
-
+            // Validates information given in text fields (checks if they are empty)
             val editTextArr = arrayOf(user, pass)
             var cont = true
             for (textElem in editTextArr) {
@@ -44,6 +45,7 @@ class GCRegister: Activity() {
                 }
             }
 
+            // Only if entries are not empty, will continue to register account
             if (cont) {
                 sendData(user.text.toString(), pass.text.toString())
             }
@@ -52,9 +54,9 @@ class GCRegister: Activity() {
 
     }
 
+    // Send data to firebase to check validity
     fun sendData(username: String, password: String) {
-        //TODO - post data to firebase database
-
+        // Creates new entry of account
         val newUser: MutableMap<String, Any> = HashMap()
         newUser["username"] = username
         newUser["password"] = password
@@ -81,9 +83,10 @@ class GCRegister: Activity() {
                         }
                     }
 
-                    if (!cont) { break }
+                    if (!cont) { break } // User already exists, will not register 
                 }
 
+                // If user exists, complete registration
                 if (cont) {
                     userRef.setValue(newUser)
                     Log.i(TAG, "Registration complete")
